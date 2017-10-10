@@ -23,7 +23,7 @@
       <plugin>
         <groupId>com.github.os72</groupId>
         <artifactId>protoc-jar-maven-plugin</artifactId>
-        <version>2.5.0.4</version> <!-- for protobuf 2.5.0 -->
+        <version>3.3.0.1</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>2.5.0</version>
+      <version>3.3.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
