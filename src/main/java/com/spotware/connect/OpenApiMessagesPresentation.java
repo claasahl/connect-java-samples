@@ -12,7 +12,7 @@ public class OpenApiMessagesPresentation {
             return "ERROR in ProtoMessage: Corrupted execution event, no payload found";
         }
         String _str = "ProtoMessage{";
-        ProtoPayloadType protoPayloadType = ProtoPayloadType.valueOf(msg.getPayloadType());
+        ProtoPayloadType protoPayloadType = ProtoPayloadType.forNumber(msg.getPayloadType());
         if (protoPayloadType == null) {
             _str += openApiMessageToString(msg);
         } else {
@@ -26,7 +26,7 @@ public class OpenApiMessagesPresentation {
                     _str += "PingResponse{timestamp:" + _ping_res.getTimestamp() + "}";
                     break;
                 case HEARTBEAT_EVENT:
-                    ProtoHeartbeatEvent _hb = ProtoHeartbeatEvent.newBuilder().mergeFrom(msg.getPayload()).build();
+                    ProtoHeartbeatEvent.newBuilder().mergeFrom(msg.getPayload()).build();
                     _str += "Heartbeat";
                     break;
                 case ERROR_RES:
@@ -43,7 +43,7 @@ public class OpenApiMessagesPresentation {
     }
 
     private static String openApiMessageToString(ProtoMessage msg) throws InvalidProtocolBufferException {
-        switch (ProtoOAPayloadType.valueOf(msg.getPayloadType())) {
+        switch (ProtoOAPayloadType.forNumber(msg.getPayloadType())) {
             case OA_AUTH_REQ:
                 ProtoOAAuthReq _auth_req = ProtoOAAuthReq.newBuilder().mergeFrom(msg.getPayload()).build();
                 return "authRequest{clientId:" + _auth_req.getClientId() + ", clientSecret:" + _auth_req.getClientSecret() + "}";
@@ -127,7 +127,7 @@ public class OpenApiMessagesPresentation {
     }
 
     private static String openApiExecEventsToString(ProtoMessage msg) throws InvalidProtocolBufferException {
-        if (ProtoOAPayloadType.valueOf(msg.getPayloadType()) != ProtoOAPayloadType.OA_EXECUTION_EVENT) {
+        if (ProtoOAPayloadType.forNumber(msg.getPayloadType()) != ProtoOAPayloadType.OA_EXECUTION_EVENT) {
             return "ERROR in openApiExecutionEvents: Wrong message type";
         }
 
