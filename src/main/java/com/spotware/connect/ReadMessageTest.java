@@ -1,14 +1,10 @@
 package com.spotware.connect;
 
+import javax.xml.bind.DatatypeConverter;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.xtrader.protocol.proto.commons.ProtoMessage;
-import com.xtrader.protocol.proto.openapi.ProtoOAExecutionEvent;
-import com.xtrader.protocol.proto.openapi.ProtoOASpotEvent;
 import com.xtrader.protocol.proto.openapi.model.ProtoOAPayloadType;
-
-import javax.swing.*;
-import javax.xml.bind.DatatypeConverter;
-import java.util.Base64;
 
 /**
  * Created by sgologuzov on 21/12/2015.
@@ -32,9 +28,9 @@ public class ReadMessageTest {
         }
 
         if (_msg.getPayloadType() == ProtoOAPayloadType.OA_EXECUTION_EVENT.getNumber()) {
-            ProtoOAExecutionEvent _payload_msg = msgFactory.GetExecutionEvent(rawData);
+            msgFactory.GetExecutionEvent(rawData);
         } else if (_msg.getPayloadType() == ProtoOAPayloadType.OA_SPOT_EVENT.getNumber()) {
-            ProtoOASpotEvent spotEventMsg = msgFactory.GetSpotEvent(rawData);
+            msgFactory.GetSpotEvent(rawData);
         }
     }
 
