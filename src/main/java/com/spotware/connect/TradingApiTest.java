@@ -50,8 +50,8 @@ public class TradingApiTest {
 
     volatile static boolean isShutdown;
     volatile static boolean isRestart;
-    private static Queue writeQueueSync = new ConcurrentLinkedQueue();
-    private static Queue readQueueSync = new ConcurrentLinkedQueue();
+    private static Queue<byte[]> writeQueueSync = new ConcurrentLinkedQueue<>();
+    private static Queue<byte[]> readQueueSync = new ConcurrentLinkedQueue<>();
 
     private static InputStream apiInputStream;
     private static OutputStream apiOutputStream;
@@ -60,7 +60,7 @@ public class TradingApiTest {
     private static OpenApiMessagesFactory outgoingMsgFactory = new OpenApiMessagesFactory();
 
     // timer thread
-    static void timer(OpenApiMessagesFactory msgFactory, Queue messagesQueue) throws InterruptedException, InvalidProtocolBufferException {
+    static void timer(OpenApiMessagesFactory msgFactory, Queue<byte[]> messagesQueue) throws InterruptedException, InvalidProtocolBufferException {
         isShutdown = false;
         while (!isShutdown) {
             Thread.sleep(1000);
@@ -71,7 +71,7 @@ public class TradingApiTest {
     }
 
     // listener thread
-    private static void listen(InputStream inputStream, Queue messagesQueue) throws InterruptedException, IOException {
+    private static void listen(InputStream inputStream, Queue<byte[]> messagesQueue) throws InterruptedException, IOException {
         isShutdown = false;
         while (!isShutdown) {
             Thread.sleep(1);
@@ -102,7 +102,7 @@ public class TradingApiTest {
     }
 
     // sender thread
-    private static void transmit(OutputStream outputStream, Queue messagesQueue, long lastSentMsgTimestamp) throws InterruptedException, IOException {
+    private static void transmit(OutputStream outputStream, Queue<byte[]> messagesQueue, long lastSentMsgTimestamp) throws InterruptedException, IOException {
         isShutdown = false;
         while (!isShutdown) {
             Thread.sleep(1);
@@ -154,7 +154,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendPingRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendPingRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createPingRequest(System.currentTimeMillis(), null);
             if (isDebugIsOn) {
@@ -166,7 +166,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendHeartbeatEvent(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendHeartbeatEvent(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createHeartbeatEvent(null);
             if (isDebugIsOn) {
@@ -178,7 +178,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendAuthorizationRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendAuthorizationRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createAuthorizationRequest(CLIENT_PUBLIC_ID, CLIENT_SECRET, null);
             if (isDebugIsOn) {
@@ -190,7 +190,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendSubscribeForTradingEventsRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendSubscribeForTradingEventsRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createSubscribeForTradingEventsRequest(TRADING_ACCOUNT_ID, CLIENT_SECRET);
             if (isDebugIsOn) {
@@ -202,7 +202,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendUnsubscribeForTradingEventsRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendUnsubscribeForTradingEventsRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createUnsubscribeForTradingEventsRequest(TRADING_ACCOUNT_ID, CLIENT_SECRET);
             if (isDebugIsOn) {
@@ -214,7 +214,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendGetAllSubscriptionsForTradingEventsRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendGetAllSubscriptionsForTradingEventsRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createAllSubscriptionsForTradingEventsRequest();
             if (isDebugIsOn) {
@@ -226,7 +226,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendMarketOrderRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendMarketOrderRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createMarketOrderRequest(TRADING_ACCOUNT_ID, TRADING_API_TOKEN, "EURUSD", ProtoTradeSide.BUY, testVolume, clientMsgId);
             if (isDebugIsOn) System.out.printf("sendMarketOrderRequest() Message to be send:\n{0}", OpenApiMessagesPresentation.toString(_msg));
@@ -235,7 +235,7 @@ public class TradingApiTest {
             throw new RuntimeException(e);
         }
     }
-    private static void sendLimitOrderRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendLimitOrderRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createLimitOrderRequest(TRADING_ACCOUNT_ID, TRADING_API_TOKEN, "EURUSD", ProtoTradeSide.BUY, 1000000, 1.8, clientMsgId);
             if (isDebugIsOn) System.out.printf("sendLimitOrderRequest() Message to be send:\n{0}", OpenApiMessagesPresentation.toString(_msg));
@@ -245,7 +245,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendStopOrderRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendStopOrderRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createStopOrderRequest(TRADING_ACCOUNT_ID, TRADING_API_TOKEN, "EURUSD", ProtoTradeSide.BUY, 1000000, 0.2, clientMsgId);
             if (isDebugIsOn) System.out.printf("sendStopOrderRequest() Message to be send:\n{0}", OpenApiMessagesPresentation.toString(_msg));
@@ -255,7 +255,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendClosePositionRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendClosePositionRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createClosePositionRequest(TRADING_ACCOUNT_ID, TRADING_API_TOKEN, testPositionId, testVolume, clientMsgId);
             if (isDebugIsOn) System.out.printf("SendClosePositionRequest() Message to be send:\n{0}", OpenApiMessagesPresentation.toString(_msg));
@@ -265,7 +265,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void sendSubscribeForSpotsRequest(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void sendSubscribeForSpotsRequest(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         try {
             ProtoMessage _msg = msgFactory.createSubscribeForSpotsRequest(TRADING_ACCOUNT_ID, TRADING_API_TOKEN, "EURUSD", clientMsgId);
             if (isDebugIsOn) {
@@ -277,7 +277,7 @@ public class TradingApiTest {
         }
     }
 
-    private static void notImplementedCommand(OpenApiMessagesFactory msgFactory, Queue writeQueue) {
+    private static void notImplementedCommand(OpenApiMessagesFactory msgFactory, Queue<byte[]> writeQueue) {
         System.out.println("Action is NOT IMPLEMENTED!");
     }
 
