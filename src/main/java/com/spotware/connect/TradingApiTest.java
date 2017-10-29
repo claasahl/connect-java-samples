@@ -299,7 +299,7 @@ public class TradingApiTest {
             new MenuItem('L', "set loss level", TradingApiTest::notImplementedCommand),
             new MenuItem('T', "set profit level", TradingApiTest::notImplementedCommand),
             new MenuItem('X', "set expiration time (in secs)", TradingApiTest::notImplementedCommand),
-            new MenuItem('0', "subscribe for EURUSD quites", TradingApiTest::sendSubscribeForSpotsRequest)
+            new MenuItem('0', "subscribe for EURUSD quotes", TradingApiTest::sendSubscribeForSpotsRequest)
     }));
 
 
