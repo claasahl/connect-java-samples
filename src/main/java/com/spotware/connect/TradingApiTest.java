@@ -27,7 +27,7 @@ public class TradingApiTest {
     private static final int API_PORT = 5032;
     private static final String CLIENT_PUBLIC_ID = "7_5az7pj935owsss8kgokcco84wc8osk0g0gksow0ow4s4ocwwgc";
     private static final String CLIENT_SECRET = "49p1ynqfy7c4sw84gwoogwwsk8cocg8ow8gc8o80c0ws448cs4";
-    private static final long TRADING_ACCOUNT_ID = 62002; // login 3000041 pass:123456 on http://sandbox-ct.spotware.com
+    private static final long TRADING_ACCOUNT_ID = 62002; // login 3000041 pass:123456 on https://sandbox-ctweb.spotware.com/
     private static final String TRADING_API_TOKEN = "test002_access_token";
 
     // Live configuration
