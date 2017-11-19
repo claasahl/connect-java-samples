@@ -8,7 +8,7 @@ import java.util.Queue;
 class MenuItem {
     @FunctionalInterface
     public interface ItemAction {
-        void invoke(OpenApiMessagesFactory msgFactory, Queue _writeQueue);
+        void invoke(OpenApiMessagesFactory msgFactory, Queue<byte[]> _writeQueue);
     }
 
     public char cmdKey;
@@ -21,7 +21,7 @@ class MenuItem {
     public MenuItem(char _cmdKey, String _itemTitle, ItemAction _itemHandler) {
         cmdKey = _cmdKey;
         itemTitle = _itemTitle;
-        itemHandler = (OpenApiMessagesFactory msgFactory, Queue _writeQueue) -> _itemHandler.invoke(msgFactory, _writeQueue);
+        itemHandler = (OpenApiMessagesFactory msgFactory, Queue<byte[]> _writeQueue) -> _itemHandler.invoke(msgFactory, _writeQueue);
     }
 
     public MenuItem clone() {
